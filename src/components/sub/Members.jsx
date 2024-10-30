@@ -1,73 +1,99 @@
-import Layout from '../common/Layout';
-import memberData from '../../data/memberData';
-import Pic from '../common/Pic';
-import MaskBox from '../common/MaskBox';
-import MaskText from '../common/MaskText';
-import Content from '../common/Content';
+import { useRef, useEffect } from 'react';
+// import SplitText from '../components/SplitText';
 
-export default function Members() {
+export default function BrandStory() {
+	const memberData = [
+		{ name: 'Angelo', text: 'CEO', pic: '/CEO.jpg' },
+		{ name: 'Peter', text: 'Creative', pic: '/creative.png' },
+		{ name: 'Paul', text: 'Model', pic: '/model.png' },
+		{ name: 'Perfume', text: 'Best Product', pic: '/p1.jpg' }
+	];
+
+	const ceoTitleRef = useRef(null);
+	const ceoSubTitleRef = useRef(null);
+	const ceoImgRef = useRef(null);
+
+	useEffect(() => {
+		// 초기화
+		if (ceoTitleRef.current) ceoTitleRef.current.classList.remove('on');
+		if (ceoSubTitleRef.current) ceoSubTitleRef.current.classList.remove('on');
+		if (ceoImgRef.current) ceoImgRef.current.classList.remove('on');
+
+		// 각 요소에 'on' 클래스 추가
+		setTimeout(() => {
+			if (ceoTitleRef.current) ceoTitleRef.current.classList.add('on');
+			if (ceoSubTitleRef.current) ceoSubTitleRef.current.classList.add('on');
+			if (ceoImgRef.current) ceoImgRef.current.classList.add('on');
+		}, 500);
+	}, []);
+
 	return (
-		<Layout title={'MEMBERS'}>
-			<MaskText delay={1}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, ad?</MaskText>
-			<br />
-			<MaskText delay={1.5} style={{ marginBottom: 80 }}>
-				Lorem ipsum dolor
-			</MaskText>
+		<main title='BrandStory'>
+			<article className='ceoBox'>
+				<div className='story'>
+					<nav className='ceoTitle' ref={ceoTitleRef}>
+						향기의 권위자 Angelo의
+						<br /> 단독 Brand 론칭
+					</nav>
+					<nav className='ceoSubTitle' ref={ceoSubTitleRef}>
+						<p>남자의 향을 완성하다</p>
+						<p>SINCE 1990</p>
+						<p>젊은날의 성공을 함께 전달하다</p>
+						<p>AVALLION의 IMAGE</p>
+					</nav>
+				</div>
 
-			<Content delay={1}>
-				<article className='ceoBox'>
-					<div className='txt'>
-						<h2>{memberData[0].name}</h2>
-						<p>{memberData[0].position}</p>
-					</div>
+				<div className='ceoImg' ref={ceoImgRef}>
+					<img className='ceo' src={memberData[0].pic} alt={memberData[0].name} />
+				</div>
+			</article>
 
-					<MaskBox className='picWrapper' style={{ width: '50%', height: '65vh' }} delay={1}>
-						<Pic style={{ width: '100%', height: '100%' }} src={'/' + memberData[0].pic} />
-					</MaskBox>
-				</article>
-
-				<article className='memberListBox'>
-					<div className='titBox'>
-						<h2>Our Team Members</h2>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora possimus non ipsa cum. Veritatis, dolore aliquam? Consectetur assumenda dolor labore.</p>
-					</div>
-
-					<ul>
-						{memberData.map((member, idx) => {
-							if (idx !== 0) {
-								return (
-									<li key={idx}>
-										{/* 이미지 컴포넌트 호출후 src에 이미지 url값 전달, pic클래스에는 이미지의 크기정도만 지정 */}
-										<Pic src={member.pic} className='pic' shadow={true} />
-										<div className='txt'>
-											<h2>{member.name}</h2>
-											<p>{member.position}</p>
-										</div>
-									</li>
-								);
-							}
-						})}
-					</ul>
-
-					<div className='descBox'>
-						<h2>Lorem ipsum dolor sit.</h2>
+			<section className='mid_1'>
+				<div className='mid_1-1'>
+					<div className='minibox'>
 						<p>
-							Lorem ipsum, dolor sit amet consectetur adipisicing elit. A esse cupiditate, vitae deleniti repellat explicabo sit, corrupti beatae dicta, nulla optio corporis alias.
-							Perferendis quidem sapiente minima, quisquam inventore soluta.
+							All day /<br /> All together /<br /> All in One
 						</p>
+						<p>멋진 남성으로 기억되는 그 시작</p>
 					</div>
-				</article>
-			</Content>
-		</Layout>
+				</div>
+				<div className='mid_1-2'>
+					<p>자연유래성분으로 피부에 자극없이 부드럽게 감싸며 하루의 시작과 끝을 함께하는 All day/ All together/ All in One 지향</p>
+					<p>완벽한 서포트를 꿈꾸는 아발론</p>
+				</div>
+			</section>
+
+			<section className='mid_2'>
+				{memberData.slice(1, 3).map((data, idx) => (
+					<article key={idx + 1}>
+						<div className='pic'>
+							<img className='others' src={data.pic} alt={data.name} />
+						</div>
+						<h3>{data.name}</h3>
+						<p>{data.text}</p>
+					</article>
+				))}
+			</section>
+
+			<section className='last'>
+				<div className='combineImg'>
+					<img className='perfume' src={memberData[3].pic} alt={memberData[3].name} />
+					<div className='bgBox'></div>
+				</div>
+				<div className='lastText'>
+					<p>완벽함의 마침표</p>
+					<p>
+						Orgainc Based
+						<br /> Classified Perfume
+					</p>
+					<div
+						className='buttons
+					'>
+						<button>information</button>
+						<button>pictures</button>
+					</div>
+				</div>
+			</section>
+		</main>
 	);
 }
-/*
-	미션
-	- MaskText컴포넌트 아래쪽의 전체 서브페이지의 콘텐츠를 일괄적으로 페이드모션 처리
-	- 해당 컨텐츠 모션을 모든 서브페이지 컴포넌트에 일일이 framer-motion적용하는 것은 비효율적
-	- Layout컴포넌트에 추가하지 않으면서 각각의 서브페이지 컴포넌트의 특정 부분에 복잡하고 일괄적인 프레임기능 적용 필요
-	- 작업1 : 서브페이지 컴포넌트 안쪽에서 컨텐츠 영역만 Wrapping처리해줄 Content.jsx 를 생성
-	- 작업2 : Context.jsx의 children으로 각 페이지의 콘텐츠를 전달해주도록 처리
-	- 작업3 : 각 서브페이지 컴포넌트에 Content컴포넌트를 Wrapper형태로 감싸서 각 페이지 전용 컨텐츠 내용 전달
-	- 작업4 : Content.jsx안쪽에 페이드인 효과의 motion컴포넌트 처리
-*/
