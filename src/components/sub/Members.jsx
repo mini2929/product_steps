@@ -12,14 +12,16 @@ export default function BrandStory() {
 	const [scrolled, setScrolled] = useState(0);
 	const [PosArr, setPosArr] = useState([]);
 	const [opacity, setOpacity] = useState(0);
+	const [mid2Opacity, setMid2Opacity] = useState(0);
 	const ref_el = useRef(null);
 	// const ref_posArr = useRef([]);
 
-	const targetClassName = 'mid_1';
+	const targetClassName = '.mid_1, .mid_2';
+	// '[class^="mid_"][class*="_1"], [class^="mid_"][class*="_2"] 이렇게도 사용 가능
 
 	const getPos = () => {
 		// ref_posArr.current = [];
-		const elements = ref_el.current.querySelectorAll(`.${targetClassName}`);
+		const elements = ref_el.current.querySelectorAll(targetClassName);
 		console.log('Found elements:', elements);
 		const newPosArr = Array.from(elements).map(el => el.offsetTop);
 
@@ -50,7 +52,13 @@ export default function BrandStory() {
 	useEffect(() => {
 		// opacity 값 설정: scrolled가 PosArr[0] 이상일 때 opacity를 1로 설정
 		if (PosArr[0]) {
-			setOpacity(Math.min(1, (scrolled - PosArr[0] + 300) / 300)); // 200px 스크롤 후 opacity가 1로
+			setOpacity(Math.min(1, (scrolled - PosArr[0] + 300) / 300)); // 300px 스크롤 후 opacity가 1로
+		}
+		// .mid_2의 opacity와 transform 설정
+		if (PosArr[1]) {
+			setMid2Opacity(Math.min(1, scrolled - PosArr[1] + 300));
+		} else {
+			setMid2Opacity(0); // 초기화
 		}
 	}, [scrolled, PosArr]);
 
@@ -129,7 +137,13 @@ export default function BrandStory() {
 				</div>
 			</section>
 
-			<section className='mid_2'>
+			<section
+				className='mid_2'
+				style={{
+					opacity: mid2Opacity,
+					transform: mid2Opacity === 0 ? 'translateY(150px)' : 'translateY(0)', // 아래에서 위로 올라오는 효과
+					transition: 'opacity 3s ease, transform 3s ease'
+				}}>
 				{memberData.slice(1, 3).map((data, idx) => (
 					<article key={idx + 1}>
 						<div className='pic'>
