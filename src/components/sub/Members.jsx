@@ -11,6 +11,7 @@ export default function BrandStory() {
 
 	const [scrolled, setScrolled] = useState(0);
 	const [PosArr, setPosArr] = useState([]);
+	const [opacity, setOpacity] = useState(0);
 	const ref_el = useRef(null);
 	// const ref_posArr = useRef([]);
 
@@ -45,6 +46,13 @@ export default function BrandStory() {
 	useEffect(() => {
 		console.log('PosArr updated:', PosArr);
 	}, [PosArr]);
+
+	useEffect(() => {
+		// opacity 값 설정: scrolled가 PosArr[0] 이상일 때 opacity를 1로 설정
+		if (PosArr[0]) {
+			setOpacity(Math.min(1, (scrolled - PosArr[0] + 300) / 300)); // 200px 스크롤 후 opacity가 1로
+		}
+	}, [scrolled, PosArr]);
 
 	const ceoSubTitleRef = useRef(null);
 	const ceoImgRef = useRef(null);
@@ -104,7 +112,8 @@ export default function BrandStory() {
 				style={{
 					left: `${scrolled - (PosArr[0] || 0)}px`, // 원래 위치에서 스크롤 거리를 빼줌
 					position: 'relative',
-					transition: 'left 0.3s ease'
+					transition: 'left 0.3s ease',
+					opacity: opacity
 				}}>
 				<div className='mid_1-1'>
 					<div className='minibox'>
