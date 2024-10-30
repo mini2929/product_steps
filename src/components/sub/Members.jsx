@@ -12,12 +12,22 @@ export default function BrandStory() {
 	const [scrolled, setScrolled] = useState(0);
 	const [PosArr, setPosArr] = useState([]);
 	const ref_el = useRef(null);
+	// const ref_posArr = useRef([]);
+
+	const targetClassName = 'mid_1';
 
 	const getPos = () => {
-		const arr = [];
-		for (const el of ref_el.current.children) arr.push(el.offsetTop);
-		setPosArr(...arr);
+		// ref_posArr.current = [];
+		const elements = ref_el.current.querySelectorAll(`.${targetClassName}`);
+
+		const newPosArr = Array.from(elements).map(el => el.offsetTop);
+
+		setPosArr(newPosArr);
+
+		// for (const el of elements) {
+		// ref_posArr.current.push(el.offsetTop);
 	};
+	// setPosArr(ref_posArr.current);
 
 	const handleScroll = () => {
 		setScrolled(window.scrollY);
@@ -30,6 +40,10 @@ export default function BrandStory() {
 			window.removeEventListener('scroll', handleScroll);
 		};
 	}, []);
+
+	useEffect(() => {
+		console.log('PosArr updated:', PosArr);
+	}, [PosArr]);
 
 	const ceoSubTitleRef = useRef(null);
 	const ceoImgRef = useRef(null);
@@ -60,7 +74,7 @@ export default function BrandStory() {
 	}, []);
 
 	return (
-		<main title='BrandStory'>
+		<main title='BrandStory' ref={ref_el}>
 			<article className='ceoBox'>
 				<div className='story'>
 					<nav className='ceoTitle'>
@@ -86,9 +100,15 @@ export default function BrandStory() {
 				</div>
 			</article>
 
-			<section className='mid_1'>
+			<section
+				className='mid_1'
+				style={{
+					left: `${Math.max(0, scrolled - (PosArr[0] || 0))}px`, // 원래 위치에서 스크롤 거리를 빼줌
+					position: 'relative',
+					transition: 'left 0.3s ease'
+				}}>
 				<div className='mid_1-1'>
-					<div className='minibox' style={{ transform: `translateX(${scrolled}px)` }}>
+					<div className='minibox'>
 						<p>
 							All day /<br /> All together /<br /> All in One
 						</p>
