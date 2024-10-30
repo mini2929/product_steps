@@ -13,11 +13,12 @@ export default function BrandStory() {
 	const [PosArr, setPosArr] = useState([]);
 	const [opacity, setOpacity] = useState(0);
 	const [mid2Opacity, setMid2Opacity] = useState(0);
+	const [scale, setScale] = useState(1);
 	const ref_el = useRef(null);
 	// const ref_posArr = useRef([]);
 
-	const targetClassName = '.mid_1, .mid_2';
-	// '[class^="mid_"][class*="_1"], [class^="mid_"][class*="_2"] 이렇게도 사용 가능
+	const targetClassName = '.mid_1, .mid_2, .combineImg';
+	// '[class^="mid_"][class*="_1"], [class^="mid_"][class*="_2"] 규칙성이 있다면 이렇게도 사용 가능
 
 	const getPos = () => {
 		// ref_posArr.current = [];
@@ -33,8 +34,36 @@ export default function BrandStory() {
 	// setPosArr(ref_posArr.current);
 
 	const handleScroll = () => {
-		setScrolled(window.scrollY);
+		const scrollY = window.scrollY;
+		setScrolled(scrollY);
+
+		// mid_2의 효과 적용
+		if (PosArr[2]) {
+			setMid2Opacity(Math.min(1, (scrollY - PosArr[2] + 300) / 300));
+		}
+
+		// 스크롤에 따른 combineImg 크기 조정
+		if (PosArr[2]) {
+			const scaleStart = PosArr[2] - 500; // 확대 시작 위치 (combineImg 전 300px 위치부터)
+			const scaleMid = PosArr[2] + 250; // 축소 시작 위치
+			const scaleEnd = PosArr[2] + 500; // 축소 끝나는 위치
+
+			if (scrollY < scaleMid) {
+				// 확대 효과 적용
+				const progress = Math.min(0.8, (scaleMid - scrollY) / 500); // 확대 비율 (0 ~ 1)
+				const scaleValue = 1 + progress * 0.4; // 최대 1.2배까지 확대
+				setScale(scaleValue);
+			} else if (scrollY >= scaleMid && scrollY <= scaleEnd) {
+				// 축소 효과 적용
+				const progress = (scrollY - scaleMid) / (scaleEnd - scaleMid); // 축소 비율 (0 ~ 1)
+				const scaleValue = 1.2 - progress * 1; // 1배까지 축소
+				setScale(scaleValue);
+			} else if (scrollY > scaleEnd) {
+				setScale(1); // 최종 크기 유지
+			}
+		}
 	};
+
 	useEffect(() => {
 		getPos();
 		window.addEventListener('resize', getPos);
@@ -156,7 +185,7 @@ export default function BrandStory() {
 			</section>
 
 			<section className='last'>
-				<div className='combineImg'>
+				<div className='combineImg' style={{ transform: `scale(${scale})`, transition: 'transform 0.3s ease' }}>
 					<img className='perfume' src={memberData[3].pic} alt={memberData[3].name} />
 					<div className='bgBox'></div>
 				</div>
