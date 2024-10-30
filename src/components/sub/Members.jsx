@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import SplitText from '../common/SplitText';
 
 export default function BrandStory() {
@@ -9,33 +9,27 @@ export default function BrandStory() {
 		{ name: 'Perfume', text: 'Best Product', pic: '/p1.jpg' }
 	];
 
-	const [scrolledPosition, setScrolledPosition] = useState(0);
-	// const handleScroll = () => {
-	// 	setScrolled(window.scrollY);
-	// 	console.log(Scrolled);
-	// };
-	// useEffect(() => {
-	// 	window.addEventListener('scroll', handleScroll);
-	// 	return () => window.removeEventListener('scroll', handleScroll);
-	// }, []);
+	const [scrolled, setScrolled] = useState(0);
+	const [PosArr, setPosArr] = useState([]);
+	const ref_el = useRef(null);
 
-	const targetRef = useRef(null);
-	const handleScroll = useCallback(() => {
-		if (!targetRef.current) return;
+	const getPos = () => {
+		const arr = [];
+		for (const el of ref_el.current.children) arr.push(el.offsetTop);
+		setPosArr(...arr);
+	};
 
-		const targetPosition = targetRef.current.getBoundingClientRect().top + window.scrollY;
-		const windowScrollY = window.scrollY;
-		if (windowScrollY >= targetPosition) {
-			setScrolledPosition(targetPosition - targetRef.current.offsetTop);
-		} else {
-			setScrolledPosition(-windowScrollY);
-		}
-	}, []);
-
+	const handleScroll = () => {
+		setScrolled(window.scrollY);
+	};
 	useEffect(() => {
+		window.addEventListener('resize', getPos);
 		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, [handleScroll]);
+		return () => {
+			window.removeEventListener('resize', getPos);
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
 
 	const ceoSubTitleRef = useRef(null);
 	const ceoImgRef = useRef(null);
@@ -94,7 +88,7 @@ export default function BrandStory() {
 
 			<section className='mid_1'>
 				<div className='mid_1-1'>
-					<div className='minibox' ref={targetRef} style={{ transform: `translateY(${scrolledPosition}px)` }}>
+					<div className='minibox' style={{ transform: `translateX(${scrolled}px)` }}>
 						<p>
 							All day /<br /> All together /<br /> All in One
 						</p>
