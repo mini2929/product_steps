@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-// import SplitText from '../components/SplitText';
+import SplitText from '../common/SplitText';
 
 export default function BrandStory() {
 	const memberData = [
@@ -9,19 +9,19 @@ export default function BrandStory() {
 		{ name: 'Perfume', text: 'Best Product', pic: '/p1.jpg' }
 	];
 
-	const ceoTitleRef = useRef(null);
+	// const ceoTitleRef = useRef(null);
 	const ceoSubTitleRef = useRef(null);
 	const ceoImgRef = useRef(null);
 
 	useEffect(() => {
 		// 초기화
-		if (ceoTitleRef.current) ceoTitleRef.current.classList.remove('on');
+		// if (ceoTitleRef.current) ceoTitleRef.current.classList.remove('on');
 		if (ceoSubTitleRef.current) ceoSubTitleRef.current.classList.remove('on');
 		if (ceoImgRef.current) ceoImgRef.current.classList.remove('on');
 
 		// 각 요소에 'on' 클래스 추가
 		setTimeout(() => {
-			if (ceoTitleRef.current) ceoTitleRef.current.classList.add('on');
+			// if (ceoTitleRef.current) ceoTitleRef.current.classList.add('on');
 			if (ceoSubTitleRef.current) ceoSubTitleRef.current.classList.add('on');
 			if (ceoImgRef.current) ceoImgRef.current.classList.add('on');
 		}, 500);
@@ -31,9 +31,12 @@ export default function BrandStory() {
 		<main title='BrandStory'>
 			<article className='ceoBox'>
 				<div className='story'>
-					<nav className='ceoTitle' ref={ceoTitleRef}>
-						향기의 권위자 Angelo의
-						<br /> 단독 Brand 론칭
+					<nav className='ceoTitle'>
+						<SplitText style={{ fontFamily: 'Noto Serif KR', fontWeight: 'bold', fontSize: '1.8rem', color: `rgba(var(--keyRGB))`, lineHeight: 2 }}>
+							{/* <h2 className='ceoTitle'> */}
+							향기의 권위자 Angelo의 단독 Brand 론칭
+							{/* </h2> */}
+						</SplitText>
 					</nav>
 					<nav className='ceoSubTitle' ref={ceoSubTitleRef}>
 						<p>남자의 향을 완성하다</p>

@@ -21,23 +21,23 @@ main {
 		height: 100%;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		.ceoTitle {
-			display: flex;
-			width: 100%;
-			font-weight: bold;
-			font-size: 1.8rem;
-			color: rgba(var(--keyRGB));
-			line-height: 1.9;
-			margin-bottom: 50px;
+		.ceoTitle > h2 {
+			// display: flex;
+			// width: 95%;
+			// font-weight: bold;
+			// font-size: 1.8rem;
+			// color: rgba(var(--keyRGB));
+			// line-height: 1.9;
+			// margin-bottom: 50px;
 			word-break: keep-all; /* 단어 단위로 줄바꿈 유지 */
-			opacity: 0;
-			transform: translateX(-100px);
-			transition: 0s;
-			&.on {
-				opacity: 1;
-				transform: translateX(0px);
-				transition: 1.5s;
-			}
+			// opacity: 0;
+			// transform: translateX(-100px);
+			// transition: 0s;
+			// &.on {
+			// 	opacity: 1;
+			// 	transform: translateX(0px);
+			// 	transition: 1.5s;
+			// }
 		}
 		.ceoSubTitle {
 			font-weight: 200;
