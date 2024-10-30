@@ -19,7 +19,7 @@ export default function BrandStory() {
 	const getPos = () => {
 		// ref_posArr.current = [];
 		const elements = ref_el.current.querySelectorAll(`.${targetClassName}`);
-
+		console.log('Found elements:', elements);
 		const newPosArr = Array.from(elements).map(el => el.offsetTop);
 
 		setPosArr(newPosArr);
@@ -33,6 +33,7 @@ export default function BrandStory() {
 		setScrolled(window.scrollY);
 	};
 	useEffect(() => {
+		getPos();
 		window.addEventListener('resize', getPos);
 		window.addEventListener('scroll', handleScroll);
 		return () => {
@@ -50,13 +51,11 @@ export default function BrandStory() {
 
 	useEffect(() => {
 		// 초기화
-		// if (ceoTitleRef.current) ceoTitleRef.current.classList.remove('on');
 		if (ceoSubTitleRef.current) ceoSubTitleRef.current.classList.remove('on');
 		if (ceoImgRef.current) ceoImgRef.current.classList.remove('on');
 
 		// 각 요소에 'on' 클래스 추가
 		setTimeout(() => {
-			// if (ceoTitleRef.current) ceoTitleRef.current.classList.add('on');
 			if (ceoSubTitleRef.current) ceoSubTitleRef.current.classList.add('on');
 			if (ceoImgRef.current) ceoImgRef.current.classList.add('on');
 		}, 500);
@@ -103,7 +102,7 @@ export default function BrandStory() {
 			<section
 				className='mid_1'
 				style={{
-					left: `${Math.max(0, scrolled - (PosArr[0] || 0))}px`, // 원래 위치에서 스크롤 거리를 빼줌
+					left: `${scrolled - (PosArr[0] || 0)}px`, // 원래 위치에서 스크롤 거리를 빼줌
 					position: 'relative',
 					transition: 'left 0.3s ease'
 				}}>
