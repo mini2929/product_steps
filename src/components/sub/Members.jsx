@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import SplitText from '../common/SplitText';
 
 export default function BrandStory() {
@@ -8,6 +8,16 @@ export default function BrandStory() {
 		{ name: 'Paul', text: 'Model', pic: '/model.png' },
 		{ name: 'Perfume', text: 'Best Product', pic: '/p1.jpg' }
 	];
+
+	const [Scrolled, setScrolled] = useState(0);
+	const handleScroll = () => {
+		setScrolled(window.scrollY);
+		console.log(Scrolled);
+	};
+	useEffect(() => {
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
 	// const ceoTitleRef = useRef(null);
 	const ceoSubTitleRef = useRef(null);
@@ -51,7 +61,7 @@ export default function BrandStory() {
 
 			<section className='mid_1'>
 				<div className='mid_1-1'>
-					<div className='minibox'>
+					<div className='minibox' style={{ transform: `translateY(${-Scrolled}px)` }}>
 						<p>
 							All day /<br /> All together /<br /> All in One
 						</p>

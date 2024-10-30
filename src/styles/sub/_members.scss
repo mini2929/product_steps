@@ -16,29 +16,14 @@ main {
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: $margin;
+	word-break: keep-all; /* 단어 단위로 줄바꿈 유지 */
 	.story {
 		width: 40%;
 		height: 100%;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		.ceoTitle > h2 {
-			// display: flex;
-			// width: 95%;
-			// font-weight: bold;
-			// font-size: 1.8rem;
-			// color: rgba(var(--keyRGB));
-			// line-height: 1.9;
-			// margin-bottom: 50px;
-			word-break: keep-all; /* 단어 단위로 줄바꿈 유지 */
-			// opacity: 0;
-			// transform: translateX(-100px);
-			// transition: 0s;
-			// &.on {
-			// 	opacity: 1;
-			// 	transform: translateX(0px);
-			// 	transition: 1.5s;
-			// }
-		}
+		// .ceoTitle > h2 {
+		// }
 		.ceoSubTitle {
 			font-weight: 200;
 			font-size: 0.8rem;
@@ -100,6 +85,9 @@ main {
 			align-items: center;
 			line-height: 1.5rem;
 			padding: 15px;
+			// opacity: 0;
+			// transform: translateY(-100px);
+			// transition: 0s;
 		}
 		p {
 			color: white;
@@ -219,7 +207,7 @@ main {
 		p:nth-child(2) {
 			font-size: 1.5rem;
 			font-weight: 200;
-			color: #555;
+			color: rgba(var(--keyRGB));
 			padding: 2px;
 			word-break: keep-all; /* 단어 단위로 줄바꿈 유지 */
 			margin-bottom: 20px;
