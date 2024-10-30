@@ -33,9 +33,7 @@ export default function BrandStory() {
 				<div className='story'>
 					<nav className='ceoTitle'>
 						<SplitText style={{ fontFamily: 'Noto Serif KR', fontWeight: 'bold', fontSize: '1.8rem', color: `rgba(var(--keyRGB))`, lineHeight: 2 }}>
-							{/* <h2 className='ceoTitle'> */}
 							향기의 권위자 Angelo의 단독 Brand 론칭
-							{/* </h2> */}
 						</SplitText>
 					</nav>
 					<nav className='ceoSubTitle' ref={ceoSubTitleRef}>
