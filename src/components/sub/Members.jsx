@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import SplitText from '../common/SplitText';
 
 export default function BrandStory() {
@@ -9,7 +9,7 @@ export default function BrandStory() {
 		{ name: 'Perfume', text: 'Best Product', pic: '/p1.jpg' }
 	];
 
-	const [Scrolled, setScrolled] = useState(0);
+	const [scrolledPosition, setScrolledPosition] = useState(0);
 	// const handleScroll = () => {
 	// 	setScrolled(window.scrollY);
 	// 	console.log(Scrolled);
@@ -20,25 +20,22 @@ export default function BrandStory() {
 	// }, []);
 
 	const targetRef = useRef(null);
+	const handleScroll = useCallback(() => {
+		if (!targetRef.current) return;
+
+		const targetPosition = targetRef.current.getBoundingClientRect().top + window.scrollY;
+		const windowScrollY = window.scrollY;
+		if (windowScrollY >= targetPosition) {
+			setScrolledPosition(targetPosition - targetRef.current.offsetTop);
+		} else {
+			setScrolledPosition(-windowScrollY);
+		}
+	}, []);
 
 	useEffect(() => {
-		const handleScroll = () => {
-			const targetPosition = targetRef.current.getBoundingClientRect().top;
-			const windowScrollY = window.scrollY;
-
-			// 요소의 위치에 도달하면 minibox를 고정
-			if (targetPosition <= 100) {
-				// 화면에서 특정 위치에 도달했을 때 고정
-				setScrolled(windowScrollY - targetRef.current.offsetTop); // 고정된 위치값을 설정
-			} else {
-				setScrolled(-windowScrollY); // 스크롤에 따라 이동
-			}
-		};
-
 		window.addEventListener('scroll', handleScroll);
-
 		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
+	}, [handleScroll]);
 
 	const ceoSubTitleRef = useRef(null);
 	const ceoImgRef = useRef(null);
@@ -57,14 +54,30 @@ export default function BrandStory() {
 		}, 500);
 	}, []);
 
+	const [isFirstTextRendered, setIsFirstTextRendered] = useState(false);
+
+	useEffect(() => {
+		// 첫 번째 SplitText가 렌더링된 후 1초 후에 두 번째 SplitText를 렌더링
+		const timer = setTimeout(() => {
+			setIsFirstTextRendered(true);
+		}, 1200); // 필요에 따라 시간 조정
+
+		return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+	}, []);
+
 	return (
 		<main title='BrandStory'>
 			<article className='ceoBox'>
 				<div className='story'>
 					<nav className='ceoTitle'>
-						<SplitText style={{ fontFamily: 'Noto Serif KR', fontWeight: 'bold', fontSize: '1.8rem', color: `rgba(var(--keyRGB))`, lineHeight: 2 }}>
-							향기의 권위자 Angelo의 단독 Brand 론칭
+						<SplitText style={{ margin: '25px 0px', fontFamily: 'Noto Serif KR', fontWeight: 'bold', fontSize: '1.8rem', color: `rgba(var(--keyRGB))` }}>
+							향기의 권위자 Angelo의
 						</SplitText>
+						{isFirstTextRendered && (
+							<SplitText style={{ margin: '40px 0px', fontFamily: 'Noto Serif KR', fontWeight: 'bold', fontSize: '1.8rem', color: `rgba(var(--keyRGB))` }}>
+								단독 Brand 론칭
+							</SplitText>
+						)}
 					</nav>
 					<nav className='ceoSubTitle' ref={ceoSubTitleRef}>
 						<p>남자의 향을 완성하다</p>
@@ -81,7 +94,7 @@ export default function BrandStory() {
 
 			<section className='mid_1'>
 				<div className='mid_1-1'>
-					<div className='minibox' ref={targetRef} style={{ transform: `translateY(${Scrolled}px)` }}>
+					<div className='minibox' ref={targetRef} style={{ transform: `translateY(${scrolledPosition}px)` }}>
 						<p>
 							All day /<br /> All together /<br /> All in One
 						</p>
