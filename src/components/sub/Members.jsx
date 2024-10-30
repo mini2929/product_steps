@@ -10,16 +10,36 @@ export default function BrandStory() {
 	];
 
 	const [Scrolled, setScrolled] = useState(0);
-	const handleScroll = () => {
-		setScrolled(window.scrollY);
-		console.log(Scrolled);
-	};
+	// const handleScroll = () => {
+	// 	setScrolled(window.scrollY);
+	// 	console.log(Scrolled);
+	// };
+	// useEffect(() => {
+	// 	window.addEventListener('scroll', handleScroll);
+	// 	return () => window.removeEventListener('scroll', handleScroll);
+	// }, []);
+
+	const targetRef = useRef(null);
+
 	useEffect(() => {
+		const handleScroll = () => {
+			const targetPosition = targetRef.current.getBoundingClientRect().top;
+			const windowScrollY = window.scrollY;
+
+			// 요소의 위치에 도달하면 minibox를 고정
+			if (targetPosition <= 100) {
+				// 화면에서 특정 위치에 도달했을 때 고정
+				setScrolled(windowScrollY - targetRef.current.offsetTop); // 고정된 위치값을 설정
+			} else {
+				setScrolled(-windowScrollY); // 스크롤에 따라 이동
+			}
+		};
+
 		window.addEventListener('scroll', handleScroll);
+
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
-	// const ceoTitleRef = useRef(null);
 	const ceoSubTitleRef = useRef(null);
 	const ceoImgRef = useRef(null);
 
@@ -61,7 +81,7 @@ export default function BrandStory() {
 
 			<section className='mid_1'>
 				<div className='mid_1-1'>
-					<div className='minibox' style={{ transform: `translateY(${-Scrolled}px)` }}>
+					<div className='minibox' ref={targetRef} style={{ transform: `translateY(${Scrolled}px)` }}>
 						<p>
 							All day /<br /> All together /<br /> All in One
 						</p>
