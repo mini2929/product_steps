@@ -15,50 +15,33 @@ export default function BrandStory() {
 	const [mid2Opacity, setMid2Opacity] = useState(0);
 	const [scale, setScale] = useState(1);
 	const ref_el = useRef(null);
-	// const ref_posArr = useRef([]);
 
 	const targetClassName = '.mid_1, .mid_2, .combineImg';
-	// '[class^="mid_"][class*="_1"], [class^="mid_"][class*="_2"] 규칙성이 있다면 이렇게도 사용 가능
 
 	const getPos = () => {
-		// ref_posArr.current = [];
 		const elements = ref_el.current.querySelectorAll(targetClassName);
 		console.log('Found elements:', elements);
 		const newPosArr = Array.from(elements).map(el => el.offsetTop);
 
 		setPosArr(newPosArr);
-
-		// for (const el of elements) {
-		// ref_posArr.current.push(el.offsetTop);
 	};
-	// setPosArr(ref_posArr.current);
 
 	const handleScroll = () => {
 		const scrollY = window.scrollY;
 		setScrolled(scrollY);
-
-		// // mid_2의 효과 적용
-		// if (PosArr[2]) {
-		// 	setMid2Opacity(Math.min(1, (scrollY - PosArr[2] + 300) / 300));
-		// }
 
 		// 스크롤에 따른 combineImg 크기 조정
 		if (PosArr[2]) {
 			const scaleMid = PosArr[2] - 200; // 축소 시작 위치
 			const scaleEnd = PosArr[2] + 100; // 축소 끝나는 위치
 
+			// 확대에서 축소 효과
 			if (scrollY < scaleMid) {
-				// 확대 효과 적용
 				const progress = Math.min(0.5, (scaleMid - scrollY) / 300); // 확대 비율 (0 ~ 1)
 				const scaleValue = 1 + progress * 0.2; // 최대 1.2배까지 확대
 				setScale(scaleValue);
-				// } else if (scrollY >= scaleMid && scrollY <= scaleEnd) {
-				// 	// 축소 효과 적용
-				// 	const progress = (scrollY - scaleMid) / (scaleEnd - scaleMid); // 축소 비율 (0 ~ 1)
-				// 	const scaleValue = 1.2 - progress * 1; // 1배까지 축소
-				// 	setScale(scaleValue);
 			} else if (scrollY > scaleEnd) {
-				setScale(1); // 최종 크기 유지
+				setScale(1); // 축소 끝나는 위치에서 최종 크기 유지
 			}
 		}
 	};
@@ -80,7 +63,7 @@ export default function BrandStory() {
 	useEffect(() => {
 		// opacity 값 설정: scrolled가 PosArr[0] 이상일 때 opacity를 1로 설정
 		if (PosArr[0]) {
-			setOpacity(Math.min(1, (scrolled - PosArr[0] + 400) / 400)); // 300px 스크롤 후 opacity가 1로
+			setOpacity(Math.min(1, (scrolled - PosArr[0] + 400) / 400)); // 400px 스크롤 후 opacity가 1로
 		}
 		// .mid_2의 opacity와 transform 설정
 		if (PosArr[1]) {
@@ -107,8 +90,8 @@ export default function BrandStory() {
 
 	const [isFirstTextRendered, setIsFirstTextRendered] = useState(false);
 
+	// 첫 번째 SplitText가 렌더링된 후 1초 후에 두 번째 SplitText를 렌더링
 	useEffect(() => {
-		// 첫 번째 SplitText가 렌더링된 후 1초 후에 두 번째 SplitText를 렌더링
 		const timer = setTimeout(() => {
 			setIsFirstTextRendered(true);
 		}, 1200); // 필요에 따라 시간 조정
