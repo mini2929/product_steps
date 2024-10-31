@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import SplitText from '../common/SplitText';
+import ButtonPath from '../../hooks/useNavigater';
 
 export default function BrandStory() {
 	const memberData = [
@@ -16,6 +17,7 @@ export default function BrandStory() {
 	const [scale, setScale] = useState(1);
 	const ref_el = useRef(null);
 
+	// 클래스 이름으로 위치 반환
 	const targetClassName = '.mid_1, .mid_2, .combineImg';
 
 	const getPos = () => {
@@ -30,19 +32,21 @@ export default function BrandStory() {
 		const scrollY = window.scrollY;
 		setScrolled(scrollY);
 
+		// PosArr[2]가 설정되지 않았으면 getPos 호출
+		if (!PosArr[2]) {
+			return;
+		}
 		// 스크롤에 따른 combineImg 크기 조정
-		if (PosArr[2]) {
-			const scaleMid = PosArr[2] - 200; // 축소 시작 위치
-			const scaleEnd = PosArr[2] + 100; // 축소 끝나는 위치
+		const scaleMid = PosArr[2] - 500; // 축소 시작 위치
+		const scaleEnd = PosArr[2] + 100; // 축소 끝나는 위치
 
-			// 확대에서 축소 효과
-			if (scrollY < scaleMid) {
-				const progress = Math.min(0.5, (scaleMid - scrollY) / 300); // 확대 비율 (0 ~ 1)
-				const scaleValue = 1 + progress * 0.2; // 최대 1.2배까지 확대
-				setScale(scaleValue);
-			} else if (scrollY > scaleEnd) {
-				setScale(1); // 축소 끝나는 위치에서 최종 크기 유지
-			}
+		// 확대에서 축소 효과
+		if (scrollY < scaleMid) {
+			const progress = Math.min(0.5, (scaleMid - scrollY) / 200); // 확대 비율 (0 ~ 1)
+			const scaleValue = 1 + progress * 0.5; // 최대 1.2배까지 확대
+			setScale(scaleValue);
+		} else if (scrollY > scaleEnd) {
+			setScale(1); // 축소 끝나는 위치에서 최종 크기 유지
 		}
 	};
 
@@ -180,8 +184,7 @@ export default function BrandStory() {
 					<div
 						className='buttons
 					'>
-						<button>information</button>
-						<button>pictures</button>
+						<ButtonPath />
 					</div>
 				</div>
 			</section>
