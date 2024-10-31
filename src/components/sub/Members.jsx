@@ -37,27 +37,26 @@ export default function BrandStory() {
 		const scrollY = window.scrollY;
 		setScrolled(scrollY);
 
-		// mid_2의 효과 적용
-		if (PosArr[2]) {
-			setMid2Opacity(Math.min(1, (scrollY - PosArr[2] + 300) / 300));
-		}
+		// // mid_2의 효과 적용
+		// if (PosArr[2]) {
+		// 	setMid2Opacity(Math.min(1, (scrollY - PosArr[2] + 300) / 300));
+		// }
 
 		// 스크롤에 따른 combineImg 크기 조정
 		if (PosArr[2]) {
-			const scaleStart = PosArr[2] - 500; // 확대 시작 위치 (combineImg 전 300px 위치부터)
-			const scaleMid = PosArr[2] + 250; // 축소 시작 위치
-			const scaleEnd = PosArr[2] + 500; // 축소 끝나는 위치
+			const scaleMid = PosArr[2] - 200; // 축소 시작 위치
+			const scaleEnd = PosArr[2] + 100; // 축소 끝나는 위치
 
 			if (scrollY < scaleMid) {
 				// 확대 효과 적용
-				const progress = Math.min(0.8, (scaleMid - scrollY) / 500); // 확대 비율 (0 ~ 1)
-				const scaleValue = 1 + progress * 0.4; // 최대 1.2배까지 확대
+				const progress = Math.min(0.5, (scaleMid - scrollY) / 300); // 확대 비율 (0 ~ 1)
+				const scaleValue = 1 + progress * 0.2; // 최대 1.2배까지 확대
 				setScale(scaleValue);
-			} else if (scrollY >= scaleMid && scrollY <= scaleEnd) {
-				// 축소 효과 적용
-				const progress = (scrollY - scaleMid) / (scaleEnd - scaleMid); // 축소 비율 (0 ~ 1)
-				const scaleValue = 1.2 - progress * 1; // 1배까지 축소
-				setScale(scaleValue);
+				// } else if (scrollY >= scaleMid && scrollY <= scaleEnd) {
+				// 	// 축소 효과 적용
+				// 	const progress = (scrollY - scaleMid) / (scaleEnd - scaleMid); // 축소 비율 (0 ~ 1)
+				// 	const scaleValue = 1.2 - progress * 1; // 1배까지 축소
+				// 	setScale(scaleValue);
 			} else if (scrollY > scaleEnd) {
 				setScale(1); // 최종 크기 유지
 			}
@@ -81,7 +80,7 @@ export default function BrandStory() {
 	useEffect(() => {
 		// opacity 값 설정: scrolled가 PosArr[0] 이상일 때 opacity를 1로 설정
 		if (PosArr[0]) {
-			setOpacity(Math.min(1, (scrolled - PosArr[0] + 300) / 300)); // 300px 스크롤 후 opacity가 1로
+			setOpacity(Math.min(1, (scrolled - PosArr[0] + 400) / 400)); // 300px 스크롤 후 opacity가 1로
 		}
 		// .mid_2의 opacity와 transform 설정
 		if (PosArr[1]) {
