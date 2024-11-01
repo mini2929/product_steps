@@ -14,7 +14,6 @@ export default function BrandStory() {
 	const [PosArr, setPosArr] = useState([]);
 	const [opacity, setOpacity] = useState(0);
 	const [mid2Opacity, setMid2Opacity] = useState(0);
-	const [scale, setScale] = useState(1);
 	const ref_el = useRef(null);
 
 	// 클래스 이름으로 위치 반환
@@ -31,23 +30,6 @@ export default function BrandStory() {
 	const handleScroll = () => {
 		const scrollY = window.scrollY;
 		setScrolled(scrollY);
-
-		// PosArr[2]가 설정되지 않았으면 getPos 호출
-		if (!PosArr[2]) {
-			return;
-		}
-		// 스크롤에 따른 combineImg 크기 조정
-		const scaleMid = PosArr[2] - 500; // 축소 시작 위치
-		const scaleEnd = PosArr[2] + 100; // 축소 끝나는 위치
-
-		// 확대에서 축소 효과
-		if (scrollY < scaleMid) {
-			const progress = Math.min(0.5, (scaleMid - scrollY) / 200); // 확대 비율 (0 ~ 1)
-			const scaleValue = 1 + progress * 0.5; // 최대 1.2배까지 확대
-			setScale(scaleValue);
-		} else if (scrollY > scaleEnd) {
-			setScale(1); // 축소 끝나는 위치에서 최종 크기 유지
-		}
 	};
 
 	useEffect(() => {
@@ -79,6 +61,7 @@ export default function BrandStory() {
 
 	const ceoSubTitleRef = useRef(null);
 	const ceoImgRef = useRef(null);
+	const combinImgRef = useRef(null);
 
 	useEffect(() => {
 		// 초기화
@@ -171,7 +154,11 @@ export default function BrandStory() {
 			</section>
 
 			<section className='last'>
-				<div className='combineImg' style={{ transform: `scale(${scale})`, transition: 'transform 0.3s ease' }}>
+				<div
+					className='combineImg'
+					ref={combinImgRef}
+					onMouseEnter={() => combinImgRef.current.classList.add('on')}
+					onMouseLeave={() => combinImgRef.current.classList.remove('on')}>
 					<img className='perfume' src={memberData[3].pic} alt={memberData[3].name} />
 					<div className='bgBox'></div>
 				</div>
